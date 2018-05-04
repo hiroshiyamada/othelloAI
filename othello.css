@@ -1,0 +1,12 @@
+#container{
+	margin-left: 400px;
+}
+
+#table{
+	font-size:40px;
+}
+
+#table table th{
+	font-size:20px;
+	color:grey;
+}
