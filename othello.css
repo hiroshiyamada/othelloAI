@@ -1,12 +1,15 @@
-#container{
-	margin-left: 400px;
-}
-
 #table{
+	margin-left: 200px;
+	margin-right: 100px;
 	font-size:40px;
+	float: left;
 }
 
 #table table th{
 	font-size:20px;
 	color:grey;
+}
+
+#formInput{
+	margin-left:300px;
 }
