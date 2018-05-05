@@ -93,34 +93,6 @@ function manOthello() {
 	}
 }
 
-//AI最善手を実行する
-function AIOthello(mode) {
-	//白色の石が置ける場所リストを取得
-	var position = getPossiblePosition(WHITE);
-	//手がない場合はalert表示して終了
-	if(position.length == 0){
-		alert("AIが指せる手がありません。");
-		return 0;
-	}
-	//AI最善手の行と列
-	var row = Number(position[0][0]);
-	var column = Number(position[0][1]);
-	//表示モードの場合は最善手を表示
-	if(mode == "view"){
-		//表示するAI最善手のテキスト
-		var txt = "AI最善手: " + "abcdefgh"[row] + "-" + "12345678"[column];
-		document.getElementById("AIStone").innerText = txt;
-	}
-	//実行モードの場合は石をひっくり返す
-	else if(mode == "execute"){
-		//ひっくり返す石リストを取得
-		var flipCells = flipSearch(row, column, WHITE, "input");
-		//石をひっくり返す
-		flip(flipCells, WHITE);
-	}
-}
-
-
 //ひっくり返すことのできる石を探索して返す
 function flipSearch(row, column, color, mode) {
 	//ひっくり返す石の位置を格納する
@@ -184,23 +156,4 @@ function flip(cells, color) {
 	}
 	//盤面に設定
 	setBoard(board);
-}
-
-//石の置ける場所リストを取得
-function getPossiblePosition(color) {
-	//石が置ける場所リスト
-	var pStonePosition = [];
-	//現在の盤面を取得
-	var board = getBoard();
-	//全盤面に対して石が置ける場所を選ぶ
-	for (var row = 0; row < board.length; row++) {
-		for (var column = 0; column < board[0].length; column++) {
-			var cells = flipSearch(row, column, color, "search");
-			//もし石が置ける場合は場所リストに追加
-			if (cells.length > 0) {
-				pStonePosition.push([row, column]);
-			}
-		}
-	}
-	return pStonePosition;
 }

@@ -8,9 +8,10 @@
 	<body>
 		<div id="table"></div>
 		<script type="text/javascript" src="./othello.js"></script>
+		<script type="text/javascript" src="./ai.js"></script>
 		<form name="form1"　onsubmit="calcOthello();return false;">
 			<p>
-				人間モード
+				人間モード(黒石を選択)
 			</p>
 			<select name="row" required>
 				<option value="10">行</option>
@@ -36,7 +37,7 @@
 			</select>
 			<select name="color" required>
 				<option value="10">石の色</option>
-				<option value="0">白</option>
+				<option value="0" disabled>白</option>
 				<option value="1">黒</option>
 			</select>
 			<br><br>
@@ -47,7 +48,7 @@
 				AIモード
 			</p>
 			<p>
-				※AIは白色の石を置く場合の最善手を表示・実行する
+				※AIは白石を置く場合の最善手を表示・実行する
 			</p>
 			<input type="button" value="AI最善手表示" onclick="AIOthello('view');">
 			<div id="AIStone"></div>
