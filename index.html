@@ -2,14 +2,14 @@
 <html lang="ja">
 	<head>
 		<meta charset="UTF-8">
-		<link rel="stylesheet" type="text/css" href="./othello.css">
+		<link rel="stylesheet" type="text/css" href="./css/othello.css">
 		<title>オセロAI</title>
 	</head>
 	<body>
 		<div id="table"></div>
-		<script type="text/javascript" src="./othello.js"></script>
-		<script type="text/javascript" src="./ai.js"></script>
-		<form name="form1"　onsubmit="calcOthello();return false;">
+		<script type="text/javascript" src="./js/othello.js"></script>
+		<script type="text/javascript" src="./js/ai.js"></script>
+		<form name="form1">
 			<p>
 				人間モード(黒石を選択)
 			</p>
@@ -42,7 +42,7 @@
 			</select>
 			<br><br>
 			<input type="submit" value="送信する" onclick="manOthello();">
-			<br><br>
+			<br>
 			------------------------------
 			<p>
 				AIモード
@@ -54,7 +54,12 @@
 			<div id="AIStone"></div>
 			<br>
 			<input type="submit" value="最善手実行" onclick="AIOthello('execute');">
-			<br><br>
+			<br>
+			------------------------------
+			<p>
+				現状の枚数
+			</p>
+			<div id="countStone"></div>
 			------------------------------
 			<p>
 				新規ゲーム
