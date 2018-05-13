@@ -8,7 +8,7 @@ var EMPTY = 2;
 var board = getBoard();
 createBoard(board);
 window.onload = function(){
-	countStone();
+	insertStoneCount(board);
 }
 
 //盤面状態をjsonをパースして取得する
@@ -35,7 +35,7 @@ function resetBoard() {
 	localStorage.removeItem('board');
 	board = getBoard();
 	createBoard(board);
-	countStone();
+	insertStoneCount(board);
 }
 
 //盤面の書き込み
@@ -84,6 +84,7 @@ function createBoard(data) {
 
 //人間の手を実行する
 function manOthello() {
+	var board = getBoard();
 	var row = Number(document.form1.row.value);
 	var column = Number(document.form1.column.value);
 	var color = Number(document.form1.color.value);
@@ -91,32 +92,18 @@ function manOthello() {
 		alert("行・列・石の色を全て選択してください。");
 	} else {
 		//ひっくり返す石リストを取得
-		var flipCells = flipSearch(row, column, color, "input");
+		var flipCells = flipSearch(board, row, column, color, "input");
 		//石をひっくり返す
-		flip(flipCells, color);
+		flip(board, flipCells, color);
 	}
 }
 
-//盤面上の枚数をカウントして表示
-function countStone(){
-	var borad = getBoard();
-	var cWhite = 0;
-	var cBlack = 0;
-	var cEmpty = 0;
-	for(var i = 0; i < board.length; i++){
-		for(var j = 0; j < board[0].length; j++){
-			if(board[i][j] == WHITE){
-				cWhite++;
-			}else if(board[i][j] == BLACK){
-				cBlack++;
-			}else if(board[i][j] == EMPTY){
-				cEmpty++;
-			}
-		}
-	}
-	var txt = "黒 : " + String(cBlack) + "枚 　白 : " + String(cWhite) + "枚";
+//枚数を盤面横に挿入する
+function insertStoneCount(board){
+	var count = countStone(board);
+	var txt = "黒 : " + String(count[1]) + "枚 　白 : " + String(count[0]) + "枚";
 	//もし空のマスがなくなるか片方の石がなくなってゲーム終了なら
-	if(cEmpty == 0 || cWhite == 0 || cBlack == 0){
+	if(isEnd(board)){
 		txt = "ゲーム終了です！最終結果......" + txt;
 	}
 	document.getElementById("countStone").innerText = txt;
