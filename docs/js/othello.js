@@ -10,6 +10,35 @@ createBoard(board);
 window.onload = function(){
 	insertStoneCount(board);
 }
+//全ての読み込みが終わってからAIの手番を実行する
+$(function(){
+	//AIの手番はAI最善手を実行
+	var turnColor = getTurn();
+	if(turnColor == 'white'){
+		AIOthello('execute');
+		setTurn('black');
+		location.reload();
+	}
+});
+//クリック属性の追加
+$("#table td").bind('click', function(){
+	var turnColor = getTurn();
+	//人間の手番(黒)なら手を実行
+	if(turnColor == 'black'){
+		//行を取得
+		var $tag_tr = $(this).parent()[0];
+		var row = $tag_tr.rowIndex - 1;
+		//列を取得
+	   	var $tag_td = $(this)[0];
+	   	var column = $tag_td.cellIndex - 1;
+	  	manOthello(row, column, BLACK);
+	  	setTurn('white');
+	  	location.reload();
+	    console.log("%s行, %s列", row, column);
+	}else{
+		alert('AIが思考中です。少しお待ち下さい。');
+	}
+});
 
 //盤面状態をjsonをパースして取得する
 function getBoard() {
@@ -24,18 +53,35 @@ function getBoard() {
 	return board;
 }
 
+//手番を取得する
+function getTurn() {
+	var turn = localStorage.getItem('turnColor');
+	if(turn == null){
+		setTurn('black');
+		turn = 'black';
+	}
+	return turn;
+}
+
 //盤面状態をlocalStorageに保存する
 function setBoard(board) {
 	var json = JSON.stringify(board);
 	localStorage.setItem('board', json);
 }
 
+//手番をlocalStorageに保存する
+function setTurn(turn){
+	localStorage.setItem('turnColor', turn);
+}
+
 //盤面状態をリセットする
 function resetBoard() {
 	localStorage.removeItem('board');
+	localStorage.removeItem('turnColor');
 	board = getBoard();
 	createBoard(board);
 	insertStoneCount(board);
+	location.reload();
 }
 
 //盤面の書き込み
@@ -83,11 +129,11 @@ function createBoard(data) {
 }
 
 //人間の手を実行する
-function manOthello() {
+function manOthello(row,column,color) {
 	var board = getBoard();
-	var row = Number(document.form1.row.value);
-	var column = Number(document.form1.column.value);
-	var color = Number(document.form1.color.value);
+	//var row = Number(document.form1.row.value);
+	//var column = Number(document.form1.column.value);
+	//var color = Number(document.form1.color.value);
 	if (row == 10 || column == 10 || color == 10) {
 		alert("行・列・石の色を全て選択してください。");
 	} else {
@@ -96,6 +142,11 @@ function manOthello() {
 		//石をひっくり返す
 		flip(board, flipCells, color);
 	}
+}
+
+//AIの手を自動実行する
+function autoAIOthello(){
+	
 }
 
 //枚数を盤面横に挿入する
