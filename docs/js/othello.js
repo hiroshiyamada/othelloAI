@@ -29,13 +29,13 @@ $(document).on('click', '#table td', function() {
 	if (turnColor == 'black') {
 		//行を取得
 		var $tag_tr = $(this).parent()[0];
-		var row = $tag_tr.rowIndex - 1;
+		var row = $tag_tr.rowIndex;
 		//列を取得
 		var $tag_td = $(this)[0];
-		var column = $tag_td.cellIndex - 1;
+		var column = $tag_td.cellIndex;
 		var man = manOthello(row, column, BLACK);
 		//人間が手を実行し終えたら手番をAIに渡す
-		if(man == 1){
+		if (man == 1) {
 			setTurn('white');
 			//盤面を更新
 			var board = getBoard();
@@ -45,8 +45,8 @@ $(document).on('click', '#table td', function() {
 		//現在の手番を取得
 		var currentColor = getTurn();
 		//AIの手番に変わっていたらAI最善手を実行
-		if(currentColor == 'white'){
-			wait(0.5).done(function () {
+		if (currentColor == 'white') {
+			wait(0.5).done(function() {
 				//AIの手を実行
 				AIOthello('execute');
 				setTurn('black');
@@ -122,36 +122,28 @@ function createBoard(data) {
 
 	var board = "";
 	board += "<table id=\"board\">";
-	for (var i = -1; i < data.length; i++) {
+	for (var i = 0; i < data.length; i++) {
 		board += "<tr>";
-		for (var j = -1; j < data[0].length; j++) {
-			//盤面に行列の指定番号を付ける
-			if (i == -1 && j > -1) {
-				board += "<th>" + "12345678"[j] + "</th>";
-			} else if (i > -1 && j == -1) {
-				board += "<th>" + "abcdefgh"[i] + "</th>";
-			} else if (i == -1 && j == -1) {
-				board += "<th></th>"
-			} else {
-				board += "<td>";
-				//dataの値によって○, ●, "" を振り分ける
-				var tempStr = "";
-				switch(data[i][j]) {
-					case 0:
-						tempStr = "○";
-						break;
-					case 1:
-						tempStr = "●";
-						break;
-					case 2:
-						tempStr = "□";
-						break;
-					default:
-						break;
-				}
-				board += tempStr;
-				board += "</td>";
+		for (var j = 0; j < data[0].length; j++) {
+			board += "<td>";
+			//dataの値によって○, ●, "" を振り分ける
+			var tempStr = "";
+			switch(data[i][j]) {
+				case 0:
+					tempStr = "○";
+					break;
+				case 1:
+					tempStr = "●";
+					break;
+				case 2:
+					tempStr = "□";
+					break;
+				default:
+					break;
 			}
+			board += tempStr;
+			board += "</td>";
+			//}
 		}
 		board += "</tr>";
 	}
@@ -173,9 +165,9 @@ function manOthello(row, column, color) {
 		//ひっくり返す石リストを取得
 		var flipCells = flipSearch(board, row, column, color, "input");
 		//石が置けない場所を選択している場合は0を返す
-		if(flipCells == 0){
+		if (flipCells == 0) {
 			return 0;
-		}else{
+		} else {
 			//石をひっくり返す
 			flip(board, flipCells, color);
 		}
