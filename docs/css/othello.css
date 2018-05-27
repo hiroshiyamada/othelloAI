@@ -3,6 +3,7 @@
 	margin-right: 100px;
 	font-size:40px;
 	float: left;
+	cursor:pointer;
 }
 
 #table table th{
