@@ -41,6 +41,7 @@ $(document).on('click', '#table td', function() {
 			var board = getBoard();
 			createBoard(board);
 			insertStoneCount(board);
+			document.getElementById("turnText").innerText = 'AI思考中';
 		}
 		//現在の手番を取得
 		var currentColor = getTurn();
@@ -54,6 +55,7 @@ $(document).on('click', '#table td', function() {
 				var board = getBoard();
 				createBoard(board);
 				insertStoneCount(board);
+				document.getElementById("turnText").innerText = '人間の手番です';
 			});
 		}
 		console.log("%s行, %s列", row, column);

@@ -8,65 +8,68 @@
 		<title>オセロAI</title>
 	</head>
 	<body>
-		<div id="table"></div>
-		<script type="text/javascript" src="./js/ai.js"></script>
-		<script type="text/javascript" src="./js/othello.js"></script>
-		<form name="form1">
-			<!--<p>
-				人間モード(黒石を選択)
-			</p>
-			<select name="row" required>
-				<option value="10">行</option>
-				<option value="0">a</option>
-				<option value="1">b</option>
-				<option value="2">c</option>
-				<option value="3">d</option>
-				<option value="4">e</option>
-				<option value="5">f</option>
-				<option value="6">g</option>
-				<option value="7">h</option>
-			</select>
-			<select name="column" required>
-				<option value="10">列</option>
-				<option value="0">1</option>
-				<option value="1">2</option>
-				<option value="2">3</option>
-				<option value="3">4</option>
-				<option value="4">5</option>
-				<option value="5">6</option>
-				<option value="6">7</option>
-				<option value="7">8</option>
-			</select>
-			<select name="color" required>
-				<option value="10">石の色</option>
-				<option value="0" disabled>白</option>
-				<option value="1">黒</option>
-			</select>
-			<br><br>
-			<input type="submit" value="送信する" onclick="manOthello();">
-			<br>
-			--------------------------------></br>
-			<p>
-				AIモード
-			</p>
-			<p>
-				※AIは白石を置く場合の最善手を表示・実行する
-			</p>
-			<input type="button" value="AI最善手表示" onclick="AIOthello('view');">
-			<div id="AIStone"></div>
-			<br>
-			<input type="submit" value="最善手実行" onclick="AIOthello('execute');">
-			<br>
-			-------------------------------- 
-			<p>
-				現状の枚数
-			</p>
-			<div id="countStone"></div>
-			------------------------------
-			<p>
-				新規ゲーム
-			</p>
-			<input type="button" value="盤面のリセット" onclick="resetBoard();">
-		</form>
+		<div class="center">
+			<div id="turnText">人間の手番です</div>
+			<div id="table"></div>
+			<script type="text/javascript" src="./js/ai.js"></script>
+			<script type="text/javascript" src="./js/othello.js"></script>
+			<form name="form1">
+				<!--<p>
+					人間モード(黒石を選択)
+				</p>
+				<select name="row" required>
+					<option value="10">行</option>
+					<option value="0">a</option>
+					<option value="1">b</option>
+					<option value="2">c</option>
+					<option value="3">d</option>
+					<option value="4">e</option>
+					<option value="5">f</option>
+					<option value="6">g</option>
+					<option value="7">h</option>
+				</select>
+				<select name="column" required>
+					<option value="10">列</option>
+					<option value="0">1</option>
+					<option value="1">2</option>
+					<option value="2">3</option>
+					<option value="3">4</option>
+					<option value="4">5</option>
+					<option value="5">6</option>
+					<option value="6">7</option>
+					<option value="7">8</option>
+				</select>
+				<select name="color" required>
+					<option value="10">石の色</option>
+					<option value="0" disabled>白</option>
+					<option value="1">黒</option>
+				</select>
+				<br><br>
+				<input type="submit" value="送信する" onclick="manOthello();">
+				<br>
+				--------------------------------></br>
+				<p>
+					AIモード
+				</p>
+				<p>
+					※AIは白石を置く場合の最善手を表示・実行する
+				</p>
+				<input type="button" value="AI最善手表示" onclick="AIOthello('view');">
+				<div id="AIStone"></div>
+				<br>
+				<input type="submit" value="最善手実行" onclick="AIOthello('execute');">
+				<br>
+				-------------------------------- 
+				<p>
+					現状の枚数
+				</p>
+				<div id="countStone"></div>
+				------------------------------
+				<p>
+					新規ゲーム
+				</p>
+				<input type="button" value="盤面のリセット" onclick="resetBoard();">
+			</form>
+		</div>
 	</body>
 </html>
