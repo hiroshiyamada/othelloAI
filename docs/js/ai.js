@@ -2,7 +2,16 @@
 var evaluateData = [[45, -20, 4, -1, -1, 4, -20, 45], [-11, -40, -1, -3, -3, -1, -40, -11], [4, -1, 2, -1, -1, 2, -1, 4], [-1, -3, -1, 0, 0, -1, -3, -1], [-1, -3, -1, 0, 0, -1, -3, -1], [4, -1, 2, -1, -1, 2, -1, 4], [-40, -16, -1, -3, -3, -1, -40, -11], [45, -20, 4, -1, -1, 4, -20, 45]];
 var blackData = [[-80, -10, -30, -30, -30, -30, -10, -80], [-10, 0, 0, 0, 0, 0, 0, -10], [-30, 0, 0, 0, 0, 0, 0, -30], [-30, 0, 0, 0, 0, 0, 0, -30], [-30, 0, 0, 0, 0, 0, 0, -30], [-30, 0, 0, 0, 0, 0, 0, -30], [-10, 0, 0, 0, 0, 0, 0, -10], [-80, -10, -30, -30, -30, -30, -10, -80]];
 //端の形のよさによる点数
-var lineScore = {"xxx" : 100, ".xx" : 100, "..x" : 100, "x.x" : 100, "x.." : 10, "..." : 0, "xx." : -50, ".x." : -50};
+var lineScore = {
+	"xxx" : 100,
+	".xx" : 100,
+	"..x" : 100,
+	"x.x" : 100,
+	"x.." : 10,
+	"..." : 0,
+	"xx." : -50,
+	".x." : -50
+};
 
 //石の置ける場所リストを取得
 function getPossiblePosition(board, color) {
@@ -22,15 +31,15 @@ function getPossiblePosition(board, color) {
 }
 
 //盤面を評価して点数の合計を返す(白色側から見た点数)
-function evalScore_data(board){
+function evalScore_data(board) {
 	var color = WHITE;
 	var score = 0;
 	for (var row = 0; row < board.length; row++) {
 		for (var column = 0; column < board[0].length; column++) {
-			if(board[row][column] == color){
+			if (board[row][column] == color) {
 				score += evaluateData[row][column];
-			//黒が端を取っている場合にはスコアをマイナス
-			}else if(board[row][column] == BLACK){
+				//黒が端を取っている場合にはスコアをマイナス
+			} else if (board[row][column] == BLACK) {
 				score += blackData[row][column];
 			}
 		}
@@ -39,7 +48,7 @@ function evalScore_data(board){
 }
 
 //盤面を評価して点数の合計を返す(白色側から見た点数)
-function evalScore(board){
+function evalScore(board) {
 	//形のよさにかける係数
 	var k = 3;
 	//着手可能数によるスコア
@@ -53,14 +62,14 @@ function evalScore(board){
 }
 
 //白の着手可能数から黒の着手可能数を引いて返す
-function posScore(board){
+function posScore(board) {
 	var white = getPossiblePosition(board, WHITE);
 	var black = getPossiblePosition(board, BLACK);
 	return 100 * (white.length - black.length);
 }
 
 //隅の形の良さによるスコアを返す
-function getFigScore(board, color){
+function getFigScore(board, color) {
 	//形を考慮しないスコア
 	//var score = evalScore_data(board);
 	var score = 0;
@@ -69,85 +78,83 @@ function getFigScore(board, color){
 	//左上
 	//左上の横3つ
 	str = "";
-	for(var i = 0; i <= 2; i++){
-		str += board[0][2-i] == color ? "x" : ".";
+	for (var i = 0; i <= 2; i++) {
+		str += board[0][2 - i] == color ? "x" : ".";
 	}
 	score += lineScore[str];
 	//左上の斜め3つ
 	str = "";
-	for(var i = 0; i <= 2; i++){
-		str += board[2-i][2-i] == color ? "x" : ".";
+	for (var i = 0; i <= 2; i++) {
+		str += board[2-i][2 - i] == color ? "x" : ".";
 	}
 	score += lineScore[str];
 	//左上の縦3つ
 	str = "";
-	for(var i = 0; i <= 2; i++){
+	for (var i = 0; i <= 2; i++) {
 		str += board[2-i][0] == color ? "x" : ".";
 	}
 	score += lineScore[str];
 	//左下
 	//左下の横3つ
 	str = "";
-	for(var i = 0; i <= 2; i++){
-		str += board[7][2-i] == color ? "x" : ".";
+	for (var i = 0; i <= 2; i++) {
+		str += board[7][2 - i] == color ? "x" : ".";
 	}
 	score += lineScore[str];
 	//左下の斜め3つ
 	str = "";
-	for(var i = 0; i <= 2; i++){
-		str += board[i+5][2-i] == color ? "x" : ".";
+	for (var i = 0; i <= 2; i++) {
+		str += board[i+5][2 - i] == color ? "x" : ".";
 	}
 	score += lineScore[str];
 	//左下の縦3つ
 	str = "";
-	for(var i = 0; i <= 2; i++){
+	for (var i = 0; i <= 2; i++) {
 		str += board[i+5][0] == color ? "x" : ".";
 	}
 	score += lineScore[str];
 	//右上
 	//右上の横3つ
 	str = "";
-	for(var i = 0; i <= 2; i++){
-		str += board[0][i+5] == color ? "x" : ".";
+	for (var i = 0; i <= 2; i++) {
+		str += board[0][i + 5] == color ? "x" : ".";
 	}
 	score += lineScore[str];
 	//右上の斜め3つ
 	str = "";
-	for(var i = 0; i <= 2; i++){
-		str += board[2-i][i+5] == color ? "x" : ".";
+	for (var i = 0; i <= 2; i++) {
+		str += board[2-i][i + 5] == color ? "x" : ".";
 	}
 	score += lineScore[str];
 	//右上の縦3つ
 	str = "";
-	for(var i = 0; i <= 2; i++){
+	for (var i = 0; i <= 2; i++) {
 		str += board[2-i][7] == color ? "x" : ".";
 	}
 	//右下
 	//右下の横3つ
 	str = "";
-	for(var i = 0; i <= 2; i++){
-		str += board[7][i+5] == color ? "x" : ".";
+	for (var i = 0; i <= 2; i++) {
+		str += board[7][i + 5] == color ? "x" : ".";
 	}
 	score += lineScore[str];
 	//右下の斜め3つ
 	str = "";
-	for(var i = 0; i <= 2; i++){
-		str += board[i+5][i+5] == color ? "x" : ".";
+	for (var i = 0; i <= 2; i++) {
+		str += board[i+5][i + 5] == color ? "x" : ".";
 	}
 	score += lineScore[str];
 	//右下の縦3つ
 	str = "";
-	for(var i = 0; i <= 2; i++){
+	for (var i = 0; i <= 2; i++) {
 		str += board[i+5][7] == color ? "x" : ".";
 	}
 	score += lineScore[str];
-	return score;		
+	return score;
 }
 
-
-
 //AIの最善手の行と列を探索して返す(ネガアルファ法)
-function searchAIPosition(board, color, depth, alpha, mode){
+function searchAIPosition(board, color, depth, alpha, mode) {
 	//最善手を格納
 	var maxRow = 10;
 	var maxColumn = 10;
@@ -156,14 +163,14 @@ function searchAIPosition(board, color, depth, alpha, mode){
 	//色の石が置ける場所リストを取得
 	var position = getPossiblePosition(board, color);
 	//深さがゼロになるか、指せる手がなくなった場合
-	if(depth == 0 || position.length == 0){
+	if (depth == 0 || position.length == 0) {
 		//盤面のスコアを計算して返す。手は適当な値。
-		if(mode == "eval"){
+		if (mode == "eval") {
 			//ネガアルファのため、葉が黒の時は点数の符号を逆転
 			maxScore = color == WHITE ? evalScore(board) : -evalScore(board);
 			alpha = color == WHITE ? alpha : -alpha;
-		//終盤は石の数で評価
-		}else if(mode == "full"){
+			//終盤は石の数で評価
+		} else if (mode == "full") {
 			var stone = countStone(board);
 			var diffStone = stone[0] - stone[1];
 			//ネガアルファのため、葉が黒の時は点数の符号を逆転
@@ -173,30 +180,22 @@ function searchAIPosition(board, color, depth, alpha, mode){
 		return [maxRow, maxColumn, maxScore];
 	}
 	//場所リストに対して盤面評価点数の最大値を取得
-	for(var i = 0; i < position.length; i++){
+	for (var i = 0; i < position.length; i++) {
 		//候補手
 		var row = Number(position[i][0]);
 		var column = Number(position[i][1]);
 		//候補手を入力し終わった盤面
 		var nextBoard = nextMap(board, row, column, color);
-		//盤面が終了状態であった場合
-		/*if(isEnd(board)){
-			//もし最終状態が勝ちであった場合
-			if(getWinner(board) == WHITE){
-				//現候補手を最大スコアとして返す
-				return [row, column, 1000];
-			}
-		}*/
 		//次の手用に色を反転させる
 		var nextColor = color == WHITE ? BLACK : WHITE;
-		//次の手の最大スコアを再帰で返す		
+		//次の手の最大スコアを再帰で返す
 		var nextResult = searchAIPosition(nextBoard, nextColor, depth - 1, -maxScore, mode);
 		console.log(nextResult);
 		//ネガアルファ用に反転
-		var nextScore = - nextResult[2];
+		var nextScore = -nextResult[2];
 		console.log("nextScore: " + String(nextScore) + " Row: " + String(row) + " Column: " + String(column));
 		//次の手のスコアが現状の最大スコアよりも大きかったら最善手と最大スコアに格納
-		if(nextScore > maxScore){
+		if (nextScore > maxScore) {
 			maxScore = nextScore;
 			maxRow = row;
 			maxColumn = column;
@@ -204,7 +203,7 @@ function searchAIPosition(board, color, depth, alpha, mode){
 		}
 		console.log("alpha: " + String(alpha));
 		//最大スコアがアルファを超えたらカット
-		if(maxScore >= alpha){
+		if (maxScore >= alpha) {
 			break;
 		}
 	}
@@ -214,13 +213,17 @@ function searchAIPosition(board, color, depth, alpha, mode){
 //AI最善手を実行する
 function AIOthello(mode) {
 	var board = getBoard();
-	//枚数をカウントして、終盤(空のマスが12枚以下)なら残りを全探索
+	//終了状態だったら何もしない
+	if(isEnd(board)){
+		return 0;
+	}
+	//枚数をカウントして、終盤(空のマスが10枚以下)なら残りを全探索
 	var stones = countStone(board);
-	if(stones[2] > 12){
+	if (stones[2] > 10) {
 		//5手先を読む
 		var depth = 5;
 		var searchMode = "eval";
-	}else{
+	} else {
 		//全探索
 		var depth = 20;
 		var searchMode = "full";
@@ -232,31 +235,36 @@ function AIOthello(mode) {
 	//AI最善手の場所を取得
 	var position = searchAIPosition(copy, WHITE, depth, alpha, searchMode);
 	//手がない場合はalert表示して終了
-	if(position[0] == 10){
+	if (position[0] == 10) {
 		alert("AIが指せる手がありません。");
+		changePass();
 		return 0;
+	} else {
+		//手が指せる場合はパスの状態を0に戻す
+		setPass('0');
 	}
 	//AI最善手の行, 列, スコア
 	var row = position[0];
 	var column = position[1];
 	var score = position[2];
 	//表示モードの場合は最善手を表示
-	if(mode == "view"){
+	if (mode == "view") {
 		//表示するAI最善手のテキスト
 		var txt = "AI最善手: " + "abcdefgh"[row] + "-" + "12345678"[column] + " AIスコア: " + String(score);
 		document.getElementById("AIStone").innerText = txt;
 	}
 	//実行モードの場合は石をひっくり返す
-	else if(mode == "execute"){
+	else if (mode == "execute") {
 		//ひっくり返す石リストを取得
 		var flipCells = flipSearch(board, row, column, WHITE, "input");
 		//石をひっくり返す
 		flip(board, flipCells, WHITE);
 	}
+	return 1;
 }
 
 //盤面をコピーする
-function cpBoard(board){
+function cpBoard(board) {
 	var cp = new Array(board.length);
 	for (var row = 0; row < board.length; row++) {
 		cp[row] = new Array(board[0].length);
@@ -331,17 +339,17 @@ function flip(board, cells, color) {
 }
 
 //盤面上の枚数をカウントして返す
-function countStone(board){
+function countStone(board) {
 	var cWhite = 0;
 	var cBlack = 0;
 	var cEmpty = 0;
-	for(var i = 0; i < board.length; i++){
-		for(var j = 0; j < board[0].length; j++){
-			if(board[i][j] == WHITE){
+	for (var i = 0; i < board.length; i++) {
+		for (var j = 0; j < board[0].length; j++) {
+			if (board[i][j] == WHITE) {
 				cWhite++;
-			}else if(board[i][j] == BLACK){
+			} else if (board[i][j] == BLACK) {
 				cBlack++;
-			}else if(board[i][j] == EMPTY){
+			} else if (board[i][j] == EMPTY) {
 				cEmpty++;
 			}
 		}
@@ -350,7 +358,7 @@ function countStone(board){
 }
 
 //一手進んだ際の盤面を返す
-function nextMap(board, row, column, color){
+function nextMap(board, row, column, color) {
 	//ひっくり返す石リストを取得
 	var cells = flipSearch(board, row, column, color, "search");
 	//盤をコピー
@@ -362,24 +370,44 @@ function nextMap(board, row, column, color){
 	return nextBoard;
 }
 
+//パス状態を変更する
+function changePass() {
+	//パスの状態を取得
+	var pass = getPass();
+	switch(pass) {
+		case '0':
+			setPass('1');
+			break;
+		case '1':
+			setPass('2');
+			break;
+		default:
+			setPass('2');
+			break;
+	}
+}
+
 //ゲームが終了したかどうかを返す
 function isEnd(board) {
-  var count = countStone(board);
-  if(count[0] == 0 || count[1] == 0 || count[2] == 0){
-  	return 1;
-  }
-  return 0;
+	//現在の石の状態を取得
+	var count = countStone(board);
+	//パス状態を取得
+	var pass = getPass();
+	if (count[0] == 0 || count[1] == 0 || count[2] == 0 || pass == '2') {
+		return 1;
+	}
+	return 0;
 }
 
 //勝者の色を返す
-function getWinner(board){
+function getWinner(board) {
 	var count = countStone(board);
-	if(isEnd(board)){
+	if (isEnd(board)) {
 		//白色(AI)が勝っていたら
-		if(count[0] >= count[1]){
+		if (count[0] >= count[1]) {
 			return 0;
-		//黒色(人間)が勝っていたら
-		}else{
+			//黒色(人間)が勝っていたら
+		} else {
 			return 1;
 		}
 	}

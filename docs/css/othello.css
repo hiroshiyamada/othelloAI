@@ -11,6 +11,15 @@
 	color:grey;
 }
 
-#formInput{
-	/*margin-left:300px;*/
+@media screen and (min-width:961px) {
+	#table{
+		margin-left: 200px;
+		margin-right: 100px;
+		font-size:40px;
+		float: left;
+		cursor:pointer;
+	}
+	#turnText{
+		margin-left: 200px;
+	}
 }

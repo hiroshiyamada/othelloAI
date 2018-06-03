@@ -10,18 +10,6 @@ createBoard(board);
 window.onload = function() {
 	insertStoneCount(board);
 }
-//全ての読み込みが終わってからAIの手番を実行する
-/*
-$(function(){
-//AIの手番はAI最善手を実行
-var turnColor = getTurn();
-if(turnColor == 'white'){
-AIOthello('execute');
-setTurn('black');
-location.reload();
-}
-});
-*/
 //クリック属性の追加
 $(document).on('click', '#table td', function() {
 	var turnColor = getTurn();
@@ -36,25 +24,23 @@ $(document).on('click', '#table td', function() {
 		var man = manOthello(row, column, BLACK);
 		//人間が手を実行し終えたら手番をAIに渡す
 		if (man == 1) {
+			setPass('0');
 			setTurn('white');
 			//盤面を更新
-			var board = getBoard();
-			createBoard(board);
-			insertStoneCount(board);
+			updateBoard();
 			document.getElementById("turnText").innerText = 'AI思考中';
 		}
 		//現在の手番を取得
 		var currentColor = getTurn();
 		//AIの手番に変わっていたらAI最善手を実行
 		if (currentColor == 'white') {
+			//AIの一連の処理を実行
 			wait(0.5).done(function() {
 				//AIの手を実行
 				AIOthello('execute');
 				setTurn('black');
 				//盤面を更新
-				var board = getBoard();
-				createBoard(board);
-				insertStoneCount(board);
+				updateBoard();
 				document.getElementById("turnText").innerText = '人間の手番です';
 			});
 		}
@@ -98,6 +84,16 @@ function getTurn() {
 	return turn;
 }
 
+//パスの状態を取得する
+function getPass() {
+	var pass = localStorage.getItem('passNum');
+	if (pass == null) {
+		setPass('0');
+		pass = '0';
+	}
+	return pass;
+}
+
 //盤面状態をlocalStorageに保存する
 function setBoard(board) {
 	var json = JSON.stringify(board);
@@ -109,13 +105,47 @@ function setTurn(turn) {
 	localStorage.setItem('turnColor', turn);
 }
 
+//パスの状態をlocalStorageに保存する
+function setPass(pass) {
+	localStorage.setItem('passNum', pass);
+}
+
 //盤面状態をリセットする
 function resetBoard() {
 	localStorage.removeItem('board');
 	localStorage.removeItem('turnColor');
+	localStorage.removeItem('passNum');
 	board = getBoard();
 	createBoard(board);
 	insertStoneCount(board);
+}
+
+//盤面を更新
+function updateBoard() {
+	var board = getBoard();
+	createBoard(board);
+	insertStoneCount(board);
+}
+
+//人間の手番をパスする
+function passBlack() {
+	//盤面を取得
+	var board = getBoard();
+	var pList = getPossiblePosition(board, BLACK);
+	//置ける場所がない場合はパス状態を更新
+	if (pList.length == 0) {
+		alert("パスしてAIに手番を渡します。");
+		changePass();
+		//AIの手を実行
+		AIOthello('execute');
+		setTurn('black');
+		//盤面を更新
+		updateBoard();
+		document.getElementById("turnText").innerText = '人間の手番です';
+	} else {
+		//手が指せる場合はパスの状態を0に戻す
+		alert("人間が指せる手があります。手を指してください。");
+	}
 }
 
 //盤面の書き込み
@@ -157,6 +187,10 @@ function createBoard(data) {
 //人間の手を実行する
 function manOthello(row, column, color) {
 	var board = getBoard();
+	//終了状態だったら何もしない
+	if (isEnd(board)) {
+		return 0;
+	}
 	//var row = Number(document.form1.row.value);
 	//var column = Number(document.form1.column.value);
 	//var color = Number(document.form1.color.value);
@@ -184,6 +218,9 @@ function insertStoneCount(board) {
 	//もし空のマスがなくなるか片方の石がなくなってゲーム終了なら
 	if (isEnd(board)) {
 		txt = "ゲーム終了です！最終結果......" + txt;
+		wait(0.5).done(function() {
+			alert(txt);
+		});
 	}
 	document.getElementById("countStone").innerText = txt;
 }
